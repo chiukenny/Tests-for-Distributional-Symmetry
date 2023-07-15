@@ -17,7 +17,7 @@ inds = sample(1:n_LHC, n_tr, replace=false)
 LHC_tr = LHC[[1,2,8,9], inds]
 
 # Save the data
-fid2 = h5open(dir_dat*"LHC.h5", "w")
+fid2 = h5open(dir_out_dat*"LHC.h5", "w")
 write(fid2, "train", LHC_tr)
 write(fid2, "data", LHC[[1,2,8,9],Not(inds)])
 

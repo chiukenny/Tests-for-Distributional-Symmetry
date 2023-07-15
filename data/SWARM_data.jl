@@ -29,7 +29,7 @@ inds_tr = sample(1:n_SWARM, n_tr, replace=false)
 SWARM_tr = SWARM[:, inds_tr]
 
 # Save the data
-fid = h5open(dir_dat*"SWARM.h5", "w")
+fid = h5open(dir_out_dat*"SWARM.h5", "w")
 write(fid, "train", SWARM_tr)
 write(fid, "data", SWARM[:,Not(inds_tr)])
 close(fid)

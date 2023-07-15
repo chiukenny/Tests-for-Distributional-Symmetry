@@ -1,4 +1,5 @@
 ## USAGE
+## -----
 ##
 ## From the command line, execute the following command to run all experiments in './experiments/':
 ##     julia --threads 4 run_experiments.jl
@@ -10,15 +11,16 @@
 
 
 # Experiment settings
-use_raw_data = false  # Start from raw data for SWARM/LHC/TQT? Only need to do so if running for the first time
+use_raw_data = true  # Start from raw data for SWARM/LHC/TQT? Only need to do so if running for the first time
 train_kernel = true   # Train kernel bandwidths? Only need to do so if running for the first time with save_kernel=true
 save_kernel = true    # Save trained kernels?
 
 # Paths
-dir_src = "./src/"          # Source code directory
-dir_dat = "./data/"         # Data directory
-dir_exp = "./experiments/"  # Experiment directory
-dir_out = "./outputs/"      # Output directory
+dir_src = "./src/"               # Source code directory
+dir_dat = "./data/"              # Raw data directory
+dir_exp = "./experiments/"       # Experiment directory
+dir_out = "./outputs/"           # Output directory
+dir_out_dat = "./outputs/data/"  # Cleaned data directory
 
 
 # -------------------
@@ -61,7 +63,7 @@ end
 
 # Run experiment(s)
 if isempty(ARGS)
-    println("Running all experiments in folder '$(dir_exp)'")
+    println("Running all experiments in folder '$(dir_exp)'\n")
     exps = readdir(dir_exp)
     n_exps = length(exps)
     for i in 1:n_exps
@@ -73,5 +75,6 @@ if isempty(ARGS)
 else
     println("Running $(ARGS[1])")
     t = @elapsed include(dir_exp * ARGS[1])
-    println("Experiment $(ARGS[1]) completed in $(ceil(Int,t)) seconds")
+    println("Experiment $(ARGS[1]) completed in $(ceil(Int,t)) seconds\n")
 end
+println("Finished running experiments")
