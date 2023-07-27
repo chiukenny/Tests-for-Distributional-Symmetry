@@ -2,18 +2,18 @@
 ## -----
 ##
 ## From the command line, execute the following command to run all experiments in './experiments/':
-##     julia --threads 4 run_experiments.jl
+##     julia --threads 1 run_experiments.jl
 ##
 ## To run only ./experiments/<script>.jl, execute the following command:
-##     julia --threads 4 run_experiments.jl <script>.jl
+##     julia --threads 1 run_experiments.jl <script>.jl
 ##
 ## Edit the 'Experiment settings' and 'Paths' variables below as necessary
 
 
 # Experiment settings
 use_raw_data = true  # Start from raw data for SWARM/LHC/TQT? Only need to do so if running for the first time
-train_kernel = true   # Train kernel bandwidths? Only need to do so if running for the first time with save_kernel=true
-save_kernel = true    # Save trained kernels?
+train_kernel = true  # Train kernel bandwidths? Only need to do so if running for the first time with save_kernel=true
+save_kernel = true   # Save trained kernels?
 
 # Paths
 dir_src = "./src/"               # Source code directory

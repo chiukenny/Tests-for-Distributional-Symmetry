@@ -1,0 +1,30 @@
+Experiment "H0": [rej.rate] ± [rej.std] (avg.time)
+2SMMD: 0.03500 ± 0.00581 (0.12675s)
+  MMD: 0.03800 ± 0.00605 (0.59032s)
+ NMMD: 0.05800 ± 0.00739 (0.25880s)
+   CW: 0.05200 ± 0.00702 (0.21226s)
+
+Experiment "H1_ind": [rej.rate] ± [rej.std] (avg.time)
+2SMMD: 0.96700 ± 0.00565 (0.12333s)
+  MMD: 1.00000 ± 0.00000 (0.58211s)
+ NMMD: 0.24100 ± 0.01352 (0.24510s)
+   CW: 0.97100 ± 0.00531 (0.20367s)
+
+Power estimates for "H1_ind": [pow.est] ± [pow.std]
+2SMMD: 0.99778 ± 0.00149
+  MMD: 1.00000 ± 0.00000
+ NMMD: 0.81610 ± 0.01225
+   CW: 1.00000 ± 0.00000
+
+Experiment "H1_SO4": [rej.rate] ± [rej.std] (avg.time)
+2SMMD: 0.98300 ± 0.00409 (0.11110s)
+  MMD: 1.00000 ± 0.00000 (0.68425s)
+ NMMD: 0.21400 ± 0.01297 (0.33414s)
+   CW: 0.99900 ± 0.00100 (0.33188s)
+
+Power estimates for "H1_SO4": [pow.est] ± [pow.std]
+2SMMD: 0.99882 ± 0.00109
+  MMD: 1.00000 ± 0.00000
+ NMMD: 0.78125 ± 0.01307
+   CW: 1.00000 ± 0.00000
+

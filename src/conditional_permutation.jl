@@ -45,7 +45,7 @@ end
 
 
 # Optimizes the kernel bandwidths via grid search
-function optimize_kernel(test::CP, f_sample_H0_data::Function; f_sample_H1_data::Function=f_nothing,
+function optimize_kernel(test::CP, f_sample_H0_data::Function; f_sample_H1_data::Function=f_nothing, seed::Int64=randInt(),
                          α::Float64=0.05, N::Int64=100, n::Int64=50,
                          σys::Vector{Float64}=Float64[], σzs::Vector{Float64}=Float64[])
     σs = zeros(2)
@@ -65,11 +65,16 @@ function optimize_kernel(test::CP, f_sample_H0_data::Function; f_sample_H1_data:
     for i in 1:nthreads()
         push!(thread_tests, deepcopy(test))
     end
+    Random.seed!(seed + 1000000)
+    base_seed = randInt()
     
     # Estimate levels
     sig = zeros(n_y, n_z)
     view_sig = view(sig, 1:n_y, 1:n_z)
-    for _ in 1:N
+    for s in 1:N
+        # Ensure the simulated data are consistent irrespective of threads at the minimum
+        Random.seed!(base_seed + s)
+        
         data0 = f_sample_H0_data(n)
         @threads for iter in eachindex(view_sig)
             i = iter[1]
@@ -91,7 +96,10 @@ function optimize_kernel(test::CP, f_sample_H0_data::Function; f_sample_H1_data:
     # Estimate powers
     if f_sample_H1_data != f_nothing
         pow = zeros(n_y, n_z)
-        for _ in 1:N
+        for s in 1:N
+            # Ensure the simulated data are consistent irrespective of threads at the minimum
+            Random.seed!(base_seed + s)
+            
             data1 = f_sample_H1_data(n)
             @threads for iter in eachindex(view_sig)
                 i = iter[1]

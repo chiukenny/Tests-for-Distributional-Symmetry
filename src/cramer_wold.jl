@@ -1,6 +1,7 @@
 ## Implementation of the Cramer-Wold test for invariance (Fraiman, 2022)
 
 
+using Base.Threads
 using Distributions
 using InvertedIndices
 using HypothesisTests
@@ -46,15 +47,15 @@ function test_statistic(test::CW, x::Matrix{Float64})
         # Compute the worst-case Kolmogorov-Smirnov statistic
         p1 = tmapcols(jitter, x'*t)
         gs = test.params
-        max_ks = 0
+        kss = Matrix{Float64}(undef, GS.M, test.J)
         for m in 1:GS.M
             p2 = tmapcols(jitter, transform_all(GS,x,gs[m])'*t)
-            for i in 1:test.J
+            @threads for i in 1:test.J
                 ks = @views ApproximateTwoSampleKSTest(p1[:,i], p2[:,i])
-                max_ks = max(max_ks, sqrt(ks.n_x*ks.n_y/(ks.n_x+ks.n_y))*ks.δ)
+                kss[m,i] = sqrt(ks.n_x*ks.n_y / (ks.n_x+ks.n_y)) * ks.δ
             end
         end
-        return max_ks
+        return maximum(kss)
     end
     
     # Perform the generator-based (distribution-free) test
@@ -72,7 +73,7 @@ function test_statistic(test::CW, x::Matrix{Float64})
     # Compute p-values and return the minimum
     pvals = Vector{Float64}(undef, J)
     @views begin
-        Threads.@threads for i in 1:J
+        @threads for i in 1:J
             g = gs[i]
             p1 = vec(x1' * t[:,i])
             p2 = vec(transform_all(GS,x2,g)' * t[:,i])

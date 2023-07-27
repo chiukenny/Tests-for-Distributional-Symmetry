@@ -1,8 +1,9 @@
 ## Testing for invariance in LHC data
 
 
-# Set the seed for reproducibility
-Random.seed!(1)
+# Set the seed to ensure that simulated data are at least consistent irrespective of threads
+seed = 1
+Random.seed!(seed)
 
 
 # Read in data
@@ -78,17 +79,17 @@ tests_SO4 = [
 results = []
 
 push!(results, run_tests(output_file, "H0", tests, N=N, n=n, α=α,
-                         f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data))
+                         f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data, seed=seed))
 
 push!(results, run_tests(output_file, "H1_ind", tests_ind, N=N, n=n, α=α,
-                         f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data))
+                         f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data, seed=seed))
 estimate_power(output_file, "H1_ind", tests_ind, N=N, n=n, α=α,
-               f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data)
+               f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data, seed=seed)
 
 push!(results, run_tests(output_file, "H1_SO4", tests_SO4, N=N, n=n, α=α,
-                         f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data))
+                         f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data, seed=seed))
 estimate_power(output_file, "H1_SO4", tests_SO4, N=N, n=n, α=α,
-               f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data)
+               f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data, seed=seed)
 
 df = hcat(results...)
 CSV.write(output_name*".csv", df)

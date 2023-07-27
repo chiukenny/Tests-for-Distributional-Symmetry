@@ -1,8 +1,9 @@
 ## Testing for SO(4) equivariance in R^{4x4} data
 
 
-# Set the seed for reproducibility
-Random.seed!(1)
+# Set the seed to ensure that simulated data are at least consistent irrespective of threads
+seed = 1
+Random.seed!(seed)
 
 
 # Experiment parameters
@@ -56,8 +57,8 @@ tests = [
 ]
 
 results = []
-push!(results, run_tests(output_file, "H0", tests, f_sample_data=H0_data, f_sample_tr_data=H0_data, N=N, n=n, α=α))
-push!(results, run_tests(output_file, "H1", tests, f_sample_data=H1_data, f_sample_tr_data=H1_data, N=N, n=n, α=α))
+push!(results, run_tests(output_file, "H0", tests, f_sample_data=H0_data, f_sample_tr_data=H0_data, N=N, n=n, α=α, seed=seed))
+push!(results, run_tests(output_file, "H1", tests, f_sample_data=H1_data, f_sample_tr_data=H1_data, N=N, n=n, α=α, seed=seed))
 df = hcat(results...)
 CSV.write(output_name*".csv", df)
 close(output_file)

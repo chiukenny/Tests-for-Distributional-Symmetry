@@ -2,8 +2,9 @@
 ## in tests for permutation invariance in R^10 data
 
 
-# Set the seed for reproducibility
-Random.seed!(1)
+# Set the seed to ensure that simulated data are at least consistent irrespective of threads
+seed = 1
+Random.seed!(seed)
 
 
 # Experiment parameters
@@ -51,9 +52,9 @@ for i in 1:length(Js)
         NMMD(GV_NMMD, GS=GS, RS=RS, J=Js[i])
         CW(GV_CW, GS=GS, RS=RS, J=Js[i])
     ]
-    push!(results, compare_tests("H0+_J$(Js[i])", tests, f_sample_data=H0_p_data, f_sample_tr_data=H0_p_data, N=N, n=n, α=α))
-    push!(results, compare_tests("H0-_J$(Js[i])", tests, f_sample_data=H0_n_data, f_sample_tr_data=H0_n_data, N=N, n=n, α=α))
-    push!(results, compare_tests("H1_J$(Js[i])", tests, f_sample_data=H1_r_data, f_sample_tr_data=H1_r_data, N=N, n=n, α=α))
+    push!(results, compare_tests("H0+_J$(Js[i])", tests, f_sample_data=H0_p_data, f_sample_tr_data=H0_p_data, N=N, n=n, α=α, seed=seed))
+    push!(results, compare_tests("H0-_J$(Js[i])", tests, f_sample_data=H0_n_data, f_sample_tr_data=H0_n_data, N=N, n=n, α=α, seed=seed))
+    push!(results, compare_tests("H1_J$(Js[i])", tests, f_sample_data=H1_r_data, f_sample_tr_data=H1_r_data, N=N, n=n, α=α, seed=seed))
 end
 df = innerjoin(on=:Test, results...)
 CSV.write(dir_out*"invariance_exchangeability_d$(d)_N$(N)_n$(n)_M$(M)_B$(B)_Jvar.csv", df)

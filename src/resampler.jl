@@ -1,6 +1,7 @@
 ## Resampling methods for tests that require resampling/bootstrapping
 
 
+using Base.Threads
 using Random
 include("util.jl")
 include("groups.jl")
@@ -21,7 +22,7 @@ function resample(test::Any, x::AbstractMatrix{Float64})
     n = size(x, 2)
     RS = test.RS
     bvals = zeros(RS.B)
-    Threads.@threads for b in 1:RS.B
+    @threads for b in 1:RS.B
         bx = RS.f_sampler(test, x)
         bvals[b] = test_statistic(test, bx)
     end
@@ -34,7 +35,7 @@ function resample(test::Any, x1::AbstractMatrix{Float64}, x2::AbstractMatrix{Flo
     n = n1 + n2
     RS = test.RS
     bvals = zeros(RS.B)
-    Threads.@threads for b in 1:RS.B
+    @threads for b in 1:RS.B
         bx1, bx2 = RS.f_sampler(test, x, n1, n2)
         bvals[b] = test_statistic(test, bx1, bx2)
     end

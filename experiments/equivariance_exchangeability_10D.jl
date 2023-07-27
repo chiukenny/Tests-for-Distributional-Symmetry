@@ -1,8 +1,9 @@
 ## Testing for permutation equivariance in R^{10x10} data
 
 
-# Set the seed for reproducibility
-Random.seed!(1)
+# Set the seed to ensure that simulated data are at least consistent irrespective of threads
+seed = 1
+Random.seed!(seed)
 
 
 # Experiment parameters
@@ -39,7 +40,7 @@ H1_data = n -> sample_xy_permute(n, H0=false)
 # Test-specific parameters
 B = 200
 S = 50
-N_tr = 50
+N_tr = 100
 
 
 # Output name
@@ -53,12 +54,12 @@ if train_kernel
     σxs = 10. .^ (-3:2)
     σys = 10. .^ (-5:2)
     σzs = 10. .^ (-3:2)
-    kci_KS = optimize_kernel(kci, H0_data, f_sample_H1_data=H1_data, N=N_tr, n=n, α=α, σxs=σxs, σys=σys, σzs=σzs)
+    kci_KS = optimize_kernel(kci, H0_data, f_sample_H1_data=H1_data, N=N_tr, n=n, α=α, σxs=σxs, σys=σys, σzs=σzs, seed=seed)
     
     cpt = CP(GV_CP, S=S, B=B, f_T=multiple_correlation_xyz)
     σys = 10. .^ (-6:1)
     σzs = 10. .^ (-2:2)
-    cp_KS = optimize_kernel(cpt, H0_data, f_sample_H1_data=H1_data, N=N_tr, n=n, α=α, σys=σys, σzs=σzs)
+    cp_KS = optimize_kernel(cpt, H0_data, f_sample_H1_data=H1_data, N=N_tr, n=n, α=α, σys=σys, σzs=σzs, seed=seed)
     
     if save_kernel
         kci_obj = Dict(:test=>kci, :KS=>kci_KS)
@@ -80,8 +81,8 @@ tests = [
 ]
 
 results = []
-push!(results, run_tests(output_file, "H0", tests, f_sample_data=H0_data, f_sample_tr_data=H0_data, N=N, n=n, α=α))
-push!(results, run_tests(output_file, "H1", tests, f_sample_data=H1_data, f_sample_tr_data=H1_data, N=N, n=n, α=α))
+push!(results, run_tests(output_file, "H0", tests, f_sample_data=H0_data, f_sample_tr_data=H0_data, N=N, n=n, α=α, seed=seed))
+push!(results, run_tests(output_file, "H1", tests, f_sample_data=H1_data, f_sample_tr_data=H1_data, N=N, n=n, α=α, seed=seed))
 df = hcat(results...)
 CSV.write(output_name*".csv", df)
 close(output_file)

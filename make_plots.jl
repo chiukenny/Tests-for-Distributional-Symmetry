@@ -9,10 +9,10 @@
 
 
 # Paths
-dir_src = "./src/"            # Source code directory
-dir_out = "./outputs/"        # Output directory
-dir_plt = "./outputs/plots/"  # Output plot directory
-dir_dat = "./outputs/data/"   # Cleaned data directory
+dir_src = "./src/"               # Source code directory
+dir_out = "./outputs/"           # Output directory
+dir_out_dat = "./outputs/data/"  # Cleaned data directory
+dir_plt = "./outputs/plots/"     # Output plot directory
 
 
 # Packages and modules
@@ -367,7 +367,7 @@ s03 = hist(GV_NMMD, pv_so3[!,:H0_NMMD_p], "NMMD", last_row=true)
 
 s11 = hist(GV_2S, pv_so3[!,:H1_2SMMD_p], title=L"H_1", p_col=:grey15)
 s12 = hist(GV_MMD, pv_so3[!,:H1_MMD_p], p_col=:grey15)
-s13 = hist(GV_NMMD, pv_so3[!,:H1_NMMD_p], last_row=true, p_col=:grey15, p_y=55)
+s13 = hist(GV_NMMD, pv_so3[!,:H1_NMMD_p], last_row=true, p_col=:grey15, p_y=67)
 
 l = @layout [grid(3,2) ; a{0.02h}]
 fig = plot(s01, s11,
@@ -460,14 +460,14 @@ pc_MMD = hist(GV_MMD, pv_swarm_inv[!,:inv_cont_MMD_p])
 pc_NMMD = hist(GV_NMMD, pv_swarm_inv[!,:inv_cont_NMMD_p])
 pc_CW = hist(GV_CW, pv_swarm_inv[!,:inv_cont_CW_p], last_row=true, p_col=:grey15)
 
-pjd_2S = hist(GV_2S, pv_swarm_jinv[!,:jinv_disc_2SMMD_p], title="Joint + Disc.", p_col=:grey15, p_y=150)
+pjd_2S = hist(GV_2S, pv_swarm_jinv[!,:jinv_disc_2SMMD_p], title="Joint + Disc.", p_col=:grey15, p_y=140)
 pjd_MMD = hist(GV_MMD, pv_swarm_jinv[!,:jinv_disc_MMD_p], p_col=:grey15)
-pjd_NMMD = hist(GV_NMMD, pv_swarm_jinv[!,:jinv_disc_NMMD_p], p_col=:grey15, p_y=138)
+pjd_NMMD = hist(GV_NMMD, pv_swarm_jinv[!,:jinv_disc_NMMD_p], p_col=:grey15, p_y=147)
 pjd_CW = hist(GV_CW, pv_swarm_jinv[!,:jinv_disc_CW_p], last_row=true, p_col=:grey15)
 
-pjc_2S = hist(GV_2S, pv_swarm_jinv[!,:jinv_cont_2SMMD_p], title="Joint + Cont.", p_col=:grey15, p_y=145)
+pjc_2S = hist(GV_2S, pv_swarm_jinv[!,:jinv_cont_2SMMD_p], title="Joint + Cont.", p_col=:grey15, p_y=147)
 pjc_MMD = hist(GV_MMD, pv_swarm_jinv[!,:jinv_cont_MMD_p], p_col=:grey15)
-pjc_NMMD = hist(GV_NMMD, pv_swarm_jinv[!,:jinv_cont_NMMD_p], p_col=:grey15, p_y=147)
+pjc_NMMD = hist(GV_NMMD, pv_swarm_jinv[!,:jinv_cont_NMMD_p], p_col=:grey15, p_y=141)
 pjc_CW = hist(GV_CW, pv_swarm_jinv[!,:jinv_cont_CW_p], last_row=true, p_col=:grey15)
 
 l = @layout [grid(4,4) ; a{0.02h}]
@@ -495,7 +495,7 @@ Random.seed!(1)
 pH0_2S = hist(GV_2S, pv_lhc_inv[!,:H0_2SMMD_p], "2SMMD", title=L"\mathbf{G}_0")
 pH0_MMD = hist(GV_MMD, pv_lhc_inv[!,:H0_MMD_p], "MMD")
 pH0_NMMD = hist(GV_NMMD, pv_lhc_inv[!,:H0_NMMD_p], "NMMD")
-pH0_CW = hist(GV_CW, pv_lhc_inv[!,:H0_CW_p], "CW", last_row=true)
+pH0_CW = hist(GV_CW, pv_lhc_inv[!,:H0_CW_p], "CW", last_row=true, p_col=:grey15)
 
 pH1_ind_2S = hist(GV_2S, pv_lhc_inv[!,:H1_ind_2SMMD_p], title=L"\mathbf{G}_1", p_col=:grey15)
 pH1_ind_MMD = hist(GV_MMD, pv_lhc_inv[!,:H1_ind_MMD_p], p_col=:grey15)

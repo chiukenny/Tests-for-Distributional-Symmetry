@@ -46,7 +46,7 @@ end
 
 
 # Optimizes the kernel bandwidths via grid search
-function optimize_kernel(test::KCI, f_sample_H0_data::Function; f_sample_H1_data::Function=f_nothing,
+function optimize_kernel(test::KCI, f_sample_H0_data::Function; f_sample_H1_data::Function=f_nothing, seed::Int64=randInt(),
                          α::Float64=0.05, N::Int64=100, n::Int64=50,
                          σxs::Vector{Float64}=Float64[], σys::Vector{Float64}=Float64[], σzs::Vector{Float64}=Float64[])
     σs = zeros(3)
@@ -70,11 +70,16 @@ function optimize_kernel(test::KCI, f_sample_H0_data::Function; f_sample_H1_data
     for i in 1:nthreads()
         push!(thread_tests, deepcopy(test))
     end
+    Random.seed!(seed + 1000000)
+    base_seed = randInt()
     
     # Estimate levels
     sig = zeros(n_x, n_y, n_z)
     view_sig = view(sig, 1:n_x, 1:n_y, 1:n_z)
-    for _ in 1:N
+    for s in 1:N
+        # Ensure the simulated data are consistent irrespective of threads at the minimum
+        Random.seed!(base_seed + s)
+        
         data0 = f_sample_H0_data(n)
         @threads for iter in eachindex(view_sig)
             i = iter[1]
@@ -100,7 +105,10 @@ function optimize_kernel(test::KCI, f_sample_H0_data::Function; f_sample_H1_data
     # Estimate powers
     if f_sample_H1_data != f_nothing
         pow = zeros(n_x, n_y, n_z)
-        for _ in 1:N
+        for s in 1:N
+            # Ensure the simulated data are consistent irrespective of threads at the minimum
+            Random.seed!(base_seed + s)
+            
             data1 = f_sample_H1_data(n)
             @threads for iter in eachindex(view_sig)
                 i = iter[1]
@@ -187,7 +195,7 @@ function test_statistic(test::KCI, x::Matrix{Float64}, y::Matrix{Float64}, z::Ma
     cKz = H * Kz * H
     
     # Compute the test statistic
-    Rz = test.ϵ .* pinv(cKz+test.ϵ*I(n))
+    Rz = test.ϵ .* pinv(cKz+test.ϵ.*I(n))
     Kxz_z = Rz * cKxz * Rz
     Ky_z = Rz * cKy * Rz
     test_stat = tr(Kxz_z*Ky_z) / n
@@ -204,10 +212,12 @@ function test_statistic(test::KCI, x::Matrix{Float64}, y::Matrix{Float64}, z::Ma
     v_Ky_z = @views real.(eigvecs(Ky_z)[:,((n-n_Ky_z)+1):n]) .* λ_Ky_z'
     
     v_prods = Matrix{Float64}(undef, n, n_Kxz_z*n_Ky_z)
-    Threads.@threads for i in 1:n_Kxz_z
-        for j in 1:n_Ky_z
-            v_prods[:, (i-1)*n_Ky_z+j] = v_Kxz_z[:,i] .* v_Ky_z[:,j]
-        end
+    Threads.@threads for ij in 1:(n_Kxz_z*n_Ky_z)
+        # Compute matrix indices from flattened matrix
+        i, j = divrem(ij, n_Ky_z)
+        j = j==0 ? n_Ky_z : j
+        i = j==n_Ky_z ? i : i+1
+        v_prods[:, ij] = @views v_Kxz_z[:,i] .* v_Ky_z[:,j]
     end
     if n > n_Kxz_z*n_Ky_z
         w = real.(eigvals(v_prods' * v_prods))

@@ -12,7 +12,7 @@ using Base.Threads
 # Runs invariance/equivariance tests and saves p-values
 # Rejection rates and other outputs are logged in console
 function run_tests(output_file::IOStream, exp_name::String, tests; N::Int64=1000, n::Int64=100, α::Float64=0.05,
-                   f_sample_data::Function=f_nothing, f_sample_tr_data::Function=f_nothing)
+                   f_sample_data::Function=f_nothing, f_sample_tr_data::Function=f_nothing, seed::Int64=randInt())
     # Prepare output data frame
     n_tests = length(tests)
     results = DataFrame()
@@ -34,7 +34,12 @@ function run_tests(output_file::IOStream, exp_name::String, tests; N::Int64=1000
     end
     
     # Run independent simulations
+    Random.seed!(seed)
+    base_seed = randInt()
     for i in 1:N
+        # Ensure the simulated data are consistent irrespective of threads at the minimum
+        Random.seed!(base_seed + i)
+        
         # Generate data
         data_tr = f_sample_tr_data(n)
         data = f_sample_data(n)
@@ -69,7 +74,7 @@ end
 
 # Runs invariance/equivariance tests and saves aggregated results (no p-values)
 function compare_tests(exp_name::String, tests; N::Int64=500, n::Int64=100, α::Float64=0.05,
-                       f_sample_data::Function=f_nothing, f_sample_tr_data::Function=f_nothing)
+                       f_sample_data::Function=f_nothing, f_sample_tr_data::Function=f_nothing, seed::Int64=randInt())
     # Prepare output data frame
     n_tests = length(tests)
     col_avgtime = Symbol(exp_name * "_avgtime")
@@ -81,7 +86,12 @@ function compare_tests(exp_name::String, tests; N::Int64=500, n::Int64=100, α::
                         col_rej_sd => zeros(n_tests))
     
     # Run independent simulations
-    for _ in 1:N
+    Random.seed!(seed)
+    base_seed = randInt()
+    for s in 1:N
+        # Ensure the simulated data are consistent irrespective of threads at the minimum
+        Random.seed!(base_seed + s)
+        
         # Generate data
         data_tr = f_sample_tr_data(n)
         data = f_sample_data(n)
@@ -108,8 +118,13 @@ end
 
 # Estimates the test power based on resampling
 function estimate_power(output_file::IOStream, exp_name::String, tests; N::Int64=500, n::Int64=100, α::Float64=0.05,
-                        f_sample_data::Function=f_nothing, f_sample_tr_data::Function=f_nothing)
+                        f_sample_data::Function=f_nothing, f_sample_tr_data::Function=f_nothing, seed::Int64=randInt())
     n_tests = length(tests)
+    
+    # Ensure the simulated data are consistent irrespective of threads
+    Random.seed!(seed)
+    base_seed = randInt()
+    Random.seed!(base_seed)
     
     # Generate data
     data_tr = f_sample_tr_data(n)
@@ -125,6 +140,9 @@ function estimate_power(output_file::IOStream, exp_name::String, tests; N::Int64
     
     pows = zeros(n_tests, N)
     @threads for j in 1:N
+        # Ensure the simulated data are consistent irrespective of threads
+        Random.seed!(base_seed + j)
+        
         # Resample data
         rs_x = data.x[:, sample(1:n,n,replace=true)]
         rs_data = OneSampleData(x=rs_x)

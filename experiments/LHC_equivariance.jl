@@ -1,8 +1,9 @@
 ## Testing for equivariance in LHC data
 
 
-# Set the seed for reproducibility
-Random.seed!(1)
+# Set the seed to ensure that simulated data are at least consistent irrespective of threads
+seed = 1
+Random.seed!(seed)
 
 
 # Read in data
@@ -57,7 +58,7 @@ LHC_sample_H1_data = n -> LHC_sample_data(n, H1=true)
 # Test-specific parameters
 B = 200
 S = 50
-N_tr = 50
+N_tr = 100
 
 
 # Output name
@@ -72,13 +73,13 @@ if train_kernel
     σys = 10. .^ (-2:1)
     σzs = 10. .^ (-1:1)
     kci_KS = optimize_kernel(kci, LHC_tr_sample_data, f_sample_H1_data=LHC_tr_sample_H1_data,
-                             N=N_tr, n=n, α=α, σxs=σxs, σys=σys, σzs=σzs)
+                             N=N_tr, n=n, α=α, σxs=σxs, σys=σys, σzs=σzs, seed=seed)
     
     cpt = CP(GV_CP, S=S, B=B, f_T=multiple_correlation_xyz)
     σys = 10. .^ (-3:-1)
     σzs = 10. .^ (-3:-1)
     cp_KS = optimize_kernel(cpt, LHC_tr_sample_data, f_sample_H1_data=LHC_tr_sample_H1_data,
-                            N=N_tr, n=n, α=α, σys=σys, σzs=σzs)
+                            N=N_tr, n=n, α=α, σys=σys, σzs=σzs, seed=seed)
     if save_kernel
         save_test(output_name*"_KCI.jld2", kci, kci_KS)
         save_test(output_name*"_CP.jld2", cpt, cp_KS)
@@ -97,9 +98,9 @@ tests = [
 
 results = []
 push!(results, run_tests(output_file, "H0", tests, N=N, n=n, α=α,
-                         f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data))
+                         f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data, seed=seed))
 push!(results, run_tests(output_file, "H1", tests, N=N, n=n, α=α,
-                         f_sample_data=LHC_sample_H1_data, f_sample_tr_data=LHC_tr_sample_H1_data))
+                         f_sample_data=LHC_sample_H1_data, f_sample_tr_data=LHC_tr_sample_H1_data, seed=seed))
 df = hcat(results...)
 CSV.write(output_name*".csv", df)
 close(output_file)

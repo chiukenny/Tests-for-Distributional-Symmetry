@@ -1,0 +1,8 @@
+Experiment "H0": [rej.rate] ± [rej.std] (avg.time)
+KCI: 0.00000 ± 0.00000 (0.02275s)
+ CP: 0.05100 ± 0.00696 (1.38409s)
+
+Experiment "H1": [rej.rate] ± [rej.std] (avg.time)
+KCI: 1.00000 ± 0.00000 (0.02192s)
+ CP: 0.99700 ± 0.00173 (1.35820s)
+

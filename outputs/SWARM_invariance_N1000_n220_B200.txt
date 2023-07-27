@@ -1,0 +1,24 @@
+Experiment "inv_disc": [rej.rate] ± [rej.std] (avg.time)
+2SMMD: 0.00700 ± 0.00264 (0.40658s)
+  MMD: 0.04700 ± 0.00669 (1.69890s)
+ NMMD: 0.06000 ± 0.00751 (0.26216s)
+   CW: 0.06400 ± 0.00774 (0.30852s)
+
+Power estimates for "inv_disc": [pow.est] ± [pow.std]
+2SMMD: 0.04522 ± 0.00657
+  MMD: 0.31274 ± 0.01466
+ NMMD: 0.20564 ± 0.01278
+   CW: 0.50631 ± 0.01581
+
+Experiment "inv_cont": [rej.rate] ± [rej.std] (avg.time)
+2SMMD: 0.00400 ± 0.00200 (0.40852s)
+  MMD: 0.04700 ± 0.00669 (1.70576s)
+ NMMD: 0.05500 ± 0.00721 (0.24798s)
+   CW: 0.08700 ± 0.00891 (0.30162s)
+
+Power estimates for "inv_cont": [pow.est] ± [pow.std]
+2SMMD: 0.04623 ± 0.00664
+  MMD: 0.28464 ± 0.01427
+ NMMD: 0.21548 ± 0.01300
+   CW: 0.52146 ± 0.01580
+

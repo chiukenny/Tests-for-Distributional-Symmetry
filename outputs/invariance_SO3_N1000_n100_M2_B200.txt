@@ -1,0 +1,18 @@
+Experiment "H0": [rej.rate] ± [rej.std] (avg.time)
+  2SMMD: 0.01400 ± 0.00372 (0.56449s)
+    MMD: 0.03800 ± 0.00605 (2.61317s)
+MMD-par: 0.04600 ± 0.00662 (2.60006s)
+   NMMD: 0.05800 ± 0.00739 (0.27645s)
+
+Experiment "H1": [rej.rate] ± [rej.std] (avg.time)
+  2SMMD: 0.92900 ± 0.00812 (0.55846s)
+    MMD: 0.97600 ± 0.00484 (2.60439s)
+MMD-par: 0.97700 ± 0.00474 (2.59642s)
+   NMMD: 0.22200 ± 0.01314 (0.27192s)
+
+Power estimates for "H1": [pow.est] ± [pow.std]
+  2SMMD: 0.00100 ± 0.00100
+    MMD: 0.00000 ± 0.00000
+MMD-par: 0.00000 ± 0.00000
+   NMMD: 0.05572 ± 0.00725
+

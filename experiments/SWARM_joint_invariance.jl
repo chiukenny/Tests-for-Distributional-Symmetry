@@ -1,8 +1,9 @@
 ## Testing for rotation joint invariance about north geographic pole in SWARM data
 
 
-# Seed for reproducibility
-Random.seed!(1)
+# Set the seed to ensure that simulated data are at least consistent irrespective of threads
+seed = 1
+Random.seed!(seed)
 
 
 # Read in data
@@ -70,14 +71,14 @@ tests_cont = [
 results = []
 
 push!(results, run_tests(output_file, "jinv_disc", tests_disc, N=N, n=n, α=α,
-                         f_sample_data=SWARM_sample_data, f_sample_tr_data=SWARM_tr_sample_data))
+                         f_sample_data=SWARM_sample_data, f_sample_tr_data=SWARM_tr_sample_data, seed=seed))
 estimate_power(output_file, "jinv_disc", tests_disc, N=N, n=n, α=α,
-               f_sample_data=SWARM_sample_data, f_sample_tr_data=SWARM_tr_sample_data)
+               f_sample_data=SWARM_sample_data, f_sample_tr_data=SWARM_tr_sample_data, seed=seed)
 
 push!(results, run_tests(output_file, "jinv_cont", tests_cont, N=N, n=n, α=α,
-                         f_sample_data=SWARM_sample_data, f_sample_tr_data=SWARM_tr_sample_data))
+                         f_sample_data=SWARM_sample_data, f_sample_tr_data=SWARM_tr_sample_data, seed=seed))
 estimate_power(output_file, "jinv_cont", tests_cont, N=N, n=n, α=α,
-               f_sample_data=SWARM_sample_data, f_sample_tr_data=SWARM_tr_sample_data)
+               f_sample_data=SWARM_sample_data, f_sample_tr_data=SWARM_tr_sample_data, seed=seed)
 
 df = hcat(results...)
 CSV.write(output_name*".csv", df)

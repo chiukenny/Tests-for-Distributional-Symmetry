@@ -1,0 +1,24 @@
+Experiment "jinv_disc": [rej.rate] ± [rej.std] (avg.time)
+2SMMD: 0.00600 ± 0.00244 (0.86331s)
+  MMD: 0.99800 ± 0.00141 (2.70645s)
+ NMMD: 0.09800 ± 0.00940 (0.40126s)
+   CW: 0.90300 ± 0.00936 (0.32658s)
+
+Power estimates for "jinv_disc": [pow.est] ± [pow.std]
+2SMMD: 0.04985 ± 0.00688
+  MMD: 1.00000 ± 0.00000
+ NMMD: 0.14199 ± 0.01104
+   CW: 0.97744 ± 0.00470
+
+Experiment "jinv_cont": [rej.rate] ± [rej.std] (avg.time)
+2SMMD: 0.01100 ± 0.00330 (0.87397s)
+  MMD: 0.99900 ± 0.00100 (2.71067s)
+ NMMD: 0.09400 ± 0.00923 (0.38120s)
+   CW: 0.89700 ± 0.00961 (0.33194s)
+
+Power estimates for "jinv_cont": [pow.est] ± [pow.std]
+2SMMD: 0.04958 ± 0.00686
+  MMD: 1.00000 ± 0.00000
+ NMMD: 0.12989 ± 0.01063
+   CW: 0.98058 ± 0.00436
+

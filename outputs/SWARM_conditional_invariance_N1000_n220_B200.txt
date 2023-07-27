@@ -1,0 +1,12 @@
+Experiment "X_inv": [rej.rate] ± [rej.std] (avg.time)
+KCI: 0.46400 ± 0.01577 (0.07338s)
+
+Experiment "Y_inv": [rej.rate] ± [rej.std] (avg.time)
+KCI: 0.27300 ± 0.01409 (0.07096s)
+
+Experiment "Z_inv": [rej.rate] ± [rej.std] (avg.time)
+KCI: 0.12700 ± 0.01053 (0.07337s)
+
+Experiment "NP": [rej.rate] ± [rej.std] (avg.time)
+KCI: 0.22300 ± 0.01316 (0.07541s)
+

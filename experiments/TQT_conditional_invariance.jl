@@ -1,8 +1,9 @@
 ## ## Testing for conditional Lorentz invariance in top quark data
 
 
-# Set the seed for reproducibility
-Random.seed!(1)
+# Set the seed to ensure that simulated data are at least consistent irrespective of threads
+seed = 1
+Random.seed!(seed)
 
 
 # Read in data
@@ -72,7 +73,7 @@ if train_kernel
     σxs = collect(LinRange(5, 50, 19))
     σzs = collect(LinRange(5, 100, 39))
     @time kci_KS = optimize_kernel(kci, TQT_tr_sample_H0_data, f_sample_H1_data=TQT_tr_sample_H1_data,
-                                   N=N_tr, n=n, α=α, σxs=σxs, σzs=σzs)
+                                   N=N_tr, n=n, α=α, σxs=σxs, σzs=σzs, seed=seed)
     
     if save_kernel
         save_test(output_name*"_KCI.jld2", kci, kci_KS)
@@ -89,9 +90,9 @@ tests = [
 
 results = []
 push!(results, run_tests(output_file, "H0", tests, N=N, n=n, α=α,
-                         f_sample_data=TQT_sample_data, f_sample_tr_data=TQT_tr_sample_H0_data))
+                         f_sample_data=TQT_sample_data, f_sample_tr_data=TQT_tr_sample_H0_data, seed=seed))
 push!(results, run_tests(output_file, "H1", tests, N=N, n=n, α=α,
-                         f_sample_data=TQT_sample_H1_data, f_sample_tr_data=TQT_tr_sample_H1_data))
+                         f_sample_data=TQT_sample_H1_data, f_sample_tr_data=TQT_tr_sample_H1_data, seed=seed))
 df = hcat(results...)
 CSV.write(output_name*".csv", df)
 close(output_file)

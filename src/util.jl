@@ -91,6 +91,13 @@ end
 # General functions
 # -----------------
 
+
+# Generates a random integer
+function randInt()
+    return rand(1:9999999)
+end
+
+
 # Standardizes a dataset
 function standardize(x::AbstractMatrix{Float64})
     return (x .- mean(x,dims=2)) ./ std(x,dims=2)

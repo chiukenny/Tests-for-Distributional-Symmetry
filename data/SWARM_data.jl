@@ -1,6 +1,7 @@
 ## Requires 'SWARM_DATA.csv' saved in './data/'
-## The dataset can be downloaded from the following link:
+## The cleaned dataset can be downloaded from the following link:
 ## https://github.com/lchristie/estimating_symmetries/tree/main/Geomag_data
+## The raw data can be obtained from: https://swarm-diss.eo.esa.int/
 
 
 # Seed for reproducibility

@@ -2,8 +2,9 @@
 ## in tests for invariance in LHC data
 
 
-# Set the seed for reproducibility
-Random.seed!(1)
+# Set the seed to ensure that simulated data are at least consistent irrespective of threads
+seed = 1
+Random.seed!(seed)
 
 
 # Read in data
@@ -68,11 +69,11 @@ for i in 1:length(Js)
         CW(GV_CW, GS=GS_SO4, RS=RS, J=Js[i])
     ]
     push!(results, compare_tests("H0_J$(Js[i])", tests, N=N, n=n, α=α,
-                                 f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data))
+                                 f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data, seed=seed))
     push!(results, compare_tests("H1_ind_J$(Js[i])", tests_ind, N=N, n=n, α=α,
-                                 f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data))
+                                 f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data, seed=seed))
     push!(results, compare_tests("H1_SO4_J$(Js[i])", tests_SO4, N=N, n=n, α=α,
-                                 f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data))
+                                 f_sample_data=LHC_sample_data, f_sample_tr_data=LHC_tr_sample_data, seed=seed))
 end
 df = innerjoin(on=:Test, results...)
 CSV.write(dir_out*"LHC_invariance_N$(N)_n$(n)_M$(M)_B$(B)_Jvar.csv", df)
