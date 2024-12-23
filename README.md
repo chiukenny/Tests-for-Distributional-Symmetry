@@ -1,3 +1,8 @@
+### Important Note
+
+As of December 18, 2024, the article supported by this repository has been superseded by the new article [Randomization Tests for Conditional Group Symmetry](https://arxiv.org/abs/2412.14391), which has its own corresponding [GitHub repository](https://github.com/chiukenny/Tests-for-Conditional-Symmetry).
+
+---
 # Hypothesis Tests for Distributional Symmetry
 
 This repository contains the code used to generate the experiment results in [Non-parametric Hypothesis Tests for Distributional Group Symmetry](https://arxiv.org/abs/2307.15834).
@@ -10,9 +15,9 @@ See the headers of `run_experiments.jl` and `make_plots.jl` for additional execu
 ---
 #### Organization
 
-This GitHub repo is organized as follows:
+This repository is organized as follows:
 
 * `/data/`: raw datasets and data cleaning scripts
 * `/experiments/`: self-contained experiment scripts that can be run in parallel
-* `/outputs/`: experiment outputs and plots
+* `/outputs/`: cleaned data, experiment outputs, and plots
 * `/src/`: implementations of tests, experiment engine, and general functions
